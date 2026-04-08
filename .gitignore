@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Package manager
+package-lock.json
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

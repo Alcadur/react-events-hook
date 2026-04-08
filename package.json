@@ -1,0 +1,39 @@
+{
+  "name": "react-events-hook",
+  "version": "0.1.0",
+  "description": "no",
+  "keywords": [
+    "react",
+    "react",
+    "hook",
+    "react",
+    "hooks",
+    "events",
+    "events",
+    "hook"
+  ],
+  "homepage": "https://github.com/Alcadur/react-events-hook#readme",
+  "bugs": {
+    "url": "https://github.com/Alcadur/react-events-hook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alcadur/react-events-hook.git"
+  },
+  "license": "MIT",
+  "author": "Alcadur",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "react": "*18.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/react": "^18.0.0",
+    "rollup": "^4.59.0",
+    "typescript": "^5.9.3"
+  }
+}
