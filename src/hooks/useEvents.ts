@@ -7,14 +7,15 @@ export const useEvents = (eventMap: InitEventsType = {}) => {
         if (!eventMap) {
             return;
         }
-        const eventMapEntries = Object.entries(eventMap);
-        eventMapEntries.forEach(([event, callback]) => {
-            onEvent(event, callback)
+        const events = [...Object.keys(eventMap), ...Object.getOwnPropertySymbols(eventMap)]
+
+        events.forEach( event => {
+            onEvent(event, eventMap[event])
         })
 
         return () => {
-            eventMapEntries.forEach(([event, callback]) => {
-                removeEvent(event, callback)
+            events.forEach((event) => {
+                removeEvent(event, eventMap[event])
             })
         }
     }, [eventMap])

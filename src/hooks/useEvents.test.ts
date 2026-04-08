@@ -41,13 +41,20 @@ describe('useEvents', () => {
 
     it('should register events from init map', () => {
         const callback = vi.fn();
-        renderHook(() => useEvents({ 'init-event': callback }));
+        const callbackSymbol = vi.fn();
+        const symbolEvent = Symbol('init-event');
+        renderHook(() => useEvents({
+            'init-event': callback,
+            [symbolEvent]: callbackSymbol
+        }));
 
         const { result } = renderHook(() => useEvents());
         act(() => {
             result.current.emitEvent('init-event', 'init-data');
+            result.current.emitEvent(symbolEvent);
         });
 
         expect(callback).toHaveBeenCalledWith('init-data');
+        expect(callbackSymbol).toHaveBeenCalled()
     });
 });
