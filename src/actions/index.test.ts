@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { sharedEvents } from "../shared-events";
+import { lastEmittedValues, sharedEvents } from "../shared-events";
 import { emitEvent } from "./emit-event";
 import { onEvent } from "./on-event";
 import { removeEvent } from "./remove-event";
@@ -7,6 +7,7 @@ import { removeEvent } from "./remove-event";
 describe("actions", () => {
     beforeEach(() => {
         Object.keys(sharedEvents).forEach((key) => delete sharedEvents[key]);
+        Object.keys(lastEmittedValues).forEach((key) => delete lastEmittedValues[key]);
     });
 
     describe("onEvent", () => {
@@ -42,6 +43,28 @@ describe("actions", () => {
 
         it("does nothing when event has no callbacks", () => {
             expect(() => emitEvent("missing-event", "data")).not.toThrow();
+        });
+
+        describe("memo", () => {
+            it("invokes all callback and stores the value", () => {
+                const callback = vi.fn();
+                onEvent("memo-event", callback);
+
+                emitEvent.memo("memo-event", "memo-data");
+
+
+                expect(callback).toHaveBeenCalledWith("memo-data");
+                expect(lastEmittedValues["memo-event"]).toEqual(["memo-data"]);
+            });
+
+            it("triggers callback immediately if event was already memoized", () => {
+                const callback = vi.fn();
+
+                emitEvent.memo("memo-event", "old-data");
+                onEvent("memo-event", callback);
+
+                expect(callback).toHaveBeenCalledWith("old-data");
+            });
         });
     });
 

@@ -1,11 +1,12 @@
 import { renderHook, act } from '@testing-library/react';
 import { useEvents } from './useEvents';
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { sharedEvents } from '../shared-events';
+import { lastEmittedValues, sharedEvents } from '../shared-events';
 
 describe('useEvents', () => {
     beforeEach(() => {
         Object.keys(sharedEvents).forEach(key => delete sharedEvents[key]);
+        Object.keys(lastEmittedValues).forEach(key => delete lastEmittedValues[key]);
     });
 
     it('should register and emit events', () => {
@@ -56,5 +57,20 @@ describe('useEvents', () => {
 
         expect(callback).toHaveBeenCalledWith('init-data');
         expect(callbackSymbol).toHaveBeenCalled()
+    });
+
+    it('should support memoized events', () => {
+        const { result } = renderHook(() => useEvents());
+        const callback = vi.fn();
+
+        act(() => {
+            result.current.emitEvent.memo('memo-event', 'memo-data');
+        });
+
+        act(() => {
+            result.current.onEvent('memo-event', callback);
+        });
+
+        expect(callback).toHaveBeenCalledWith('memo-data');
     });
 });
