@@ -69,6 +69,28 @@ emitEvent('eventName', 'some data');
 emitEvent('eventWithParams', 1, 2, 3);
 ```
 
+#### emitEvent.memo
+`emitEvent.memo` remembers the last emitted value and triggers a new callback immediately with that value. To clear memorized value, call `emitEvent.memo(undefined)` or to avoid extra emission, use `clearMemo` (described below)
+```ts
+onEvent('eventName', (data) => console.log(data)) 
+emitEvent('eventName', 'some data');
+// expected log: some data
+
+emitEvent('eventName', 'some data');
+onEvent('eventName', (data) => console.log(data))
+// no logs expected, event was emited before subscription
+
+emitEvent.memo('eventName', 'some data');
+onEvent('eventName', (data) => console.log(data))
+// expected log: some data
+
+emitEvent.memo('eventName', 'some data');
+emitEvent('eventName', 123); // value emited without memo
+onEvent('eventName', (data) => console.log(data))
+// expected log: some data
+
+```
+
 There no difference between directly usage of `emitEvent` and `emitEvent` returned from `useEvents` hook.
 
 ### removeEvent
@@ -81,3 +103,16 @@ removeEvent('eventName', eventHandler);
 ```
 
 There no difference between directly usage of `removeEvent` and `removeEvent` returned from `useEvents` hook.
+
+
+### clearMemo
+`clearMemo` removes the last memorized event emitted value
+
+```ts
+clearMemo('eventName');
+```
+
+There no difference between directly usage of `clearMemo` and `clearMemo` returned from `useEvents` hook.
+
+
+
