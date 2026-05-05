@@ -3,6 +3,7 @@ import { lastEmittedValues, sharedEvents } from "../shared-events";
 import { emitEvent } from "./emit-event";
 import { onEvent } from "./on-event";
 import { removeEvent } from "./remove-event";
+import { clearMemo } from "./clear-memo";
 
 describe("actions", () => {
     beforeEach(() => {
@@ -52,7 +53,6 @@ describe("actions", () => {
 
                 emitEvent.memo("memo-event", "memo-data");
 
-
                 expect(callback).toHaveBeenCalledWith("memo-data");
                 expect(lastEmittedValues["memo-event"]).toEqual(["memo-data"]);
             });
@@ -65,6 +65,53 @@ describe("actions", () => {
 
                 expect(callback).toHaveBeenCalledWith("old-data");
             });
+
+            it("clears memoized value when emitEvent.memo is called with undefined", () => {
+                const callback = vi.fn();
+                onEvent("memo-event", callback);
+
+                emitEvent.memo("memo-event", "some-data");
+                expect(lastEmittedValues["memo-event"]).toEqual(["some-data"]);
+                expect(callback).toHaveBeenCalledWith("some-data");
+
+                emitEvent.memo("memo-event", undefined);
+                expect(lastEmittedValues["memo-event"]).toBeUndefined();
+                expect(callback).toHaveBeenCalledWith(undefined);
+            });
+
+            it("should not trigger callback immediately when last emitted value is undefined", () => {
+                const callback = vi.fn();
+                const callback2 = vi.fn();
+
+                emitEvent.memo("memo-event", "some-data");
+                onEvent("memo-event", callback);
+                expect(callback).toHaveBeenCalledWith("some-data");
+
+                emitEvent.memo("memo-event", undefined);
+                onEvent("memo-event", callback2);
+                expect(callback).toHaveBeenCalledWith(undefined);
+                expect(callback2).not.toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe("clearMemo", () => {
+        it("removes the memoized value for a given event", () => {
+            emitEvent.memo("test-event", "data");
+            expect(lastEmittedValues["test-event"]).toEqual(["data"]);
+
+            clearMemo("test-event");
+            expect(lastEmittedValues["test-event"]).toBeUndefined();
+        });
+
+        it("does not trigger callbacks", () => {
+            const callback = vi.fn();
+            onEvent("test-event", callback);
+            emitEvent.memo("test-event", "data");
+            callback.mockClear();
+
+            clearMemo("test-event");
+            expect(callback).not.toHaveBeenCalled();
         });
     });
 

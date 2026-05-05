@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { InitEventsType } from "../events.model";
-import { emitEvent, onEvent, removeEvent } from "../actions";
+import { emitEvent, onEvent, removeEvent, clearMemo } from "../actions";
 
 export const useEvents = (eventMap: InitEventsType = {}) => {
     useEffect(() => {
@@ -20,5 +20,5 @@ export const useEvents = (eventMap: InitEventsType = {}) => {
         }
     }, [eventMap])
 
-    return { onEvent, emitEvent, removeEvent };
+    return { onEvent, emitEvent, removeEvent, clearMemo };
 };

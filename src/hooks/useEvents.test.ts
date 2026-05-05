@@ -73,4 +73,23 @@ describe('useEvents', () => {
 
         expect(callback).toHaveBeenCalledWith('memo-data');
     });
+
+    it('should clear memoized events', () => {
+        const { result } = renderHook(() => useEvents());
+        const callback = vi.fn();
+
+        act(() => {
+            result.current.emitEvent.memo('memo-event', 'memo-data');
+        });
+
+        act(() => {
+            result.current.clearMemo('memo-event');
+        });
+
+        act(() => {
+            result.current.onEvent('memo-event', callback);
+        });
+
+        expect(callback).not.toHaveBeenCalled();
+    });
 });
