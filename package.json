@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "Alcadur",
   "type": "module",
-  "main": "index.ts",
+  "main": "build/index.js",
   "scripts": {
     "test": "vitest run"
   },

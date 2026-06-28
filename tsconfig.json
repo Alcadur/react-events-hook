@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "build",
     "jsx": "react",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
