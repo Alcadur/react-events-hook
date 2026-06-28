@@ -4,13 +4,9 @@
   "description": "Helps in easy communication between React components as also with external sources",
   "keywords": [
     "react",
-    "react",
     "hook",
-    "react",
     "hooks",
-    "events",
-    "events",
-    "hook"
+    "events"
   ],
   "homepage": "https://github.com/Alcadur/react-events-hook#readme",
   "bugs": {
@@ -23,9 +19,27 @@
   "license": "MIT",
   "author": "Alcadur",
   "type": "module",
-  "main": "build/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "vitest run"
+    "build": "tsc",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.3.0",

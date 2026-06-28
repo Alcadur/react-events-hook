@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { InitEventsType } from "../events.model";
 import { emitEvent, onEvent, removeEvent, clearMemo } from "../actions";
