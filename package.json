@@ -1,6 +1,6 @@
 {
   "name": "@alcadur/react-events-hook",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Helps in easy communication between React components as also with external sources",
   "keywords": [
     "react",
